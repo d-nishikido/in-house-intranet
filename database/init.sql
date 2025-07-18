@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS employees (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
     department VARCHAR(100),
     organization_id INTEGER REFERENCES organizations(id),
     position VARCHAR(100),
@@ -51,10 +52,12 @@ INSERT INTO organizations (name) VALUES
 ('総務部'),
 ('人事部');
 
-INSERT INTO employees (name, email, department, organization_id, position, extension) VALUES 
-('田中太郎', 'tanaka@company.com', 'IT部', 2, 'マネージャー', '1001'),
-('佐藤花子', 'sato@company.com', '人事部', 5, 'スタッフ', '1002'),
-('山田次郎', 'yamada@company.com', '総務部', 4, 'チーフ', '1003');
+-- Default password for all test users is 'password123'
+-- Hash generated using bcrypt with salt rounds 10
+INSERT INTO employees (name, email, password_hash, department, organization_id, position, extension) VALUES 
+('田中太郎', 'tanaka@company.com', '$2b$10$J7cXbgkNYOdWHCkXF3XmY.KZrVjIeJGfHbmRuNZWKjsRGWZhbmGg6', 'IT部', 2, 'マネージャー', '1001'),
+('佐藤花子', 'sato@company.com', '$2b$10$J7cXbgkNYOdWHCkXF3XmY.KZrVjIeJGfHbmRuNZWKjsRGWZhbmGg6', '人事部', 5, 'スタッフ', '1002'),
+('山田次郎', 'yamada@company.com', '$2b$10$J7cXbgkNYOdWHCkXF3XmY.KZrVjIeJGfHbmRuNZWKjsRGWZhbmGg6', '総務部', 4, 'チーフ', '1003');
 
 INSERT INTO announcements (title, content, created_by) VALUES 
 ('システムメンテナンスのお知らせ', '来週月曜日にシステムメンテナンスを実施します。', 1),

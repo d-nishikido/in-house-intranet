@@ -119,4 +119,5 @@ in-house-intranet/
 - 各種申請・承認ワークフロー
 
 ## サンプルアカウント
-- tanaka@company.com
+- メール: tanaka@company.com, sato@company.com, yamada@company.com
+- パスワード: password123

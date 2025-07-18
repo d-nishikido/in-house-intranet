@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
 
+const authRoutes = require('./auth');
 const employeeRoutes = require('./employees');
 const announcementRoutes = require('./announcements');
 const documentRoutes = require('./documents');
 const organizationRoutes = require('./organizations');
 
+router.use('/auth', authRoutes);
 router.use('/employees', employeeRoutes);
 router.use('/announcements', announcementRoutes);
 router.use('/documents', documentRoutes);

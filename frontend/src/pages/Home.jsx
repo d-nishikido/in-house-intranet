@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Layout from '../components/Layout';
 
 const Home = () => {
   const [announcements, setAnnouncements] = useState([]);
@@ -23,30 +24,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-blue-600 text-white p-4">
-        <div className="container mx-auto">
-          <h1 className="text-2xl font-bold">田中太郎さんのページ</h1>
-          <p className="text-blue-100">今日の日付: {new Date().toLocaleDateString('ja-JP')}</p>
-        </div>
-      </header>
-
-      <nav className="bg-blue-500 text-white p-2">
-        <div className="container mx-auto">
-          <ul className="flex flex-wrap gap-4 text-sm">
-            <li><a href="#" className="hover:underline">出勤者</a></li>
-            <li><a href="#" className="hover:underline">福利厚生委員会</a></li>
-            <li><a href="#" className="hover:underline">意見箱</a></li>
-            <li><a href="#" className="hover:underline">掲示板</a></li>
-            <li><a href="#" className="hover:underline">社員名簿</a></li>
-            <li><a href="#" className="hover:underline">監査ページ</a></li>
-            <li><a href="#" className="hover:underline">お気に入りに追加</a></li>
-            <li><a href="#" className="hover:underline">お問い合わせ</a></li>
-          </ul>
-        </div>
-      </nav>
-
-      <main className="container mx-auto p-4">
+    <Layout>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <div className="bg-white p-6 rounded-lg shadow">
             <h2 className="text-xl font-bold mb-4">お知らせ</h2>
@@ -116,8 +94,7 @@ const Home = () => {
             </ul>
           </div>
         </div>
-      </main>
-    </div>
+    </Layout>
   );
 };
 
