@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Layout from '../components/Layout';
 
@@ -6,12 +7,25 @@ const Home = () => {
   const [announcements, setAnnouncements] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pagination, setPagination] = useState(null);
+  const [externalLinks, setExternalLinks] = useState([]);
+  const [linksLoading, setLinksLoading] = useState(true);
+  const [linksError, setLinksError] = useState(null);
+  const [documentCounts, setDocumentCounts] = useState([]);
+  const [documentsLoading, setDocumentsLoading] = useState(true);
+  const [documentsError, setDocumentsError] = useState(null);
 
   useEffect(() => {
     const fetchAnnouncements = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:3001'}/api/announcements`);
-        setAnnouncements(response.data);
+        setLoading(true);
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL || 'http://localhost:3001'}/api/announcements`,
+          { params: { page: currentPage, limit: 5 } }
+        );
+        setAnnouncements(response.data.data);
+        setPagination(response.data.pagination);
       } catch (err) {
         setError('お知らせの取得に失敗しました');
         console.error('Error fetching announcements:', err);
@@ -21,6 +35,44 @@ const Home = () => {
     };
 
     fetchAnnouncements();
+  }, [currentPage]);
+
+  useEffect(() => {
+    const fetchExternalLinks = async () => {
+      try {
+        setLinksLoading(true);
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL || 'http://localhost:3001'}/api/external-links`
+        );
+        setExternalLinks(response.data);
+      } catch (err) {
+        setLinksError('外部システムリンクの取得に失敗しました');
+        console.error('Error fetching external links:', err);
+      } finally {
+        setLinksLoading(false);
+      }
+    };
+
+    fetchExternalLinks();
+  }, []);
+
+  useEffect(() => {
+    const fetchDocumentCounts = async () => {
+      try {
+        setDocumentsLoading(true);
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL || 'http://localhost:3001'}/api/documents/status-count`
+        );
+        setDocumentCounts(response.data);
+      } catch (err) {
+        setDocumentsError('書類処理状況の取得に失敗しました');
+        console.error('Error fetching document counts:', err);
+      } finally {
+        setDocumentsLoading(false);
+      }
+    };
+
+    fetchDocumentCounts();
   }, []);
 
   return (
@@ -31,14 +83,62 @@ const Home = () => {
             {loading && <p>読み込み中...</p>}
             {error && <p className="text-red-500">{error}</p>}
             {!loading && !error && (
+              <>
+                <ul className="space-y-2">
+                  {announcements.map((announcement) => (
+                    <li key={announcement.id} className="border-b pb-2">
+                      <Link to={`/announcements/${announcement.id}`} className="block hover:bg-gray-50 p-2 rounded">
+                        <h3 className="font-semibold text-blue-600 hover:underline">{announcement.title}</h3>
+                        <p className="text-sm text-gray-600 line-clamp-2">{announcement.content}</p>
+                        <p className="text-xs text-gray-500">
+                          {new Date(announcement.created_at).toLocaleDateString('ja-JP')}
+                        </p>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+                {pagination && pagination.totalPages > 1 && (
+                  <div className="flex justify-between items-center mt-4">
+                    <button
+                      onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                      disabled={!pagination.hasPreviousPage}
+                      className="px-3 py-1 text-sm bg-blue-500 text-white rounded disabled:bg-gray-300"
+                    >
+                      前へ
+                    </button>
+                    <span className="text-sm">
+                      {pagination.currentPage} / {pagination.totalPages} ページ
+                    </span>
+                    <button
+                      onClick={() => setCurrentPage(prev => Math.min(prev + 1, pagination.totalPages))}
+                      disabled={!pagination.hasNextPage}
+                      className="px-3 py-1 text-sm bg-blue-500 text-white rounded disabled:bg-gray-300"
+                    >
+                      次へ
+                    </button>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+
+          <div className="bg-white p-6 rounded-lg shadow">
+            <h2 className="text-xl font-bold mb-4">外部システムリンク</h2>
+            {linksLoading && <p>読み込み中...</p>}
+            {linksError && <p className="text-red-500">{linksError}</p>}
+            {!linksLoading && !linksError && (
               <ul className="space-y-2">
-                {announcements.map((announcement) => (
-                  <li key={announcement.id} className="border-b pb-2">
-                    <h3 className="font-semibold">{announcement.title}</h3>
-                    <p className="text-sm text-gray-600">{announcement.content}</p>
-                    <p className="text-xs text-gray-500">
-                      {new Date(announcement.created_at).toLocaleDateString('ja-JP')}
-                    </p>
+                {externalLinks.map((link) => (
+                  <li key={link.id}>
+                    <a 
+                      href={link.url} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="text-blue-600 hover:underline"
+                      title={link.description}
+                    >
+                      {link.name}
+                    </a>
                   </li>
                 ))}
               </ul>
@@ -46,50 +146,45 @@ const Home = () => {
           </div>
 
           <div className="bg-white p-6 rounded-lg shadow">
-            <h2 className="text-xl font-bold mb-4">外部システムリンク</h2>
-            <ul className="space-y-2">
-              <li>
-                <a href="https://app.uconne.jp/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-                  健康安心コネクトアプリ
-                </a>
-              </li>
-              <li>
-                <a href="https://console.mo.hdems.com/#/eandm.co.jp/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-                  HENNGE One - 送信一時保留確認
-                </a>
-              </li>
-              <li>
-                <a href="https://transfer.hennge.com/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-                  HENNGE One - セキュアストレージ
-                </a>
-              </li>
-              <li>
-                <a href="https://anpic-v3.jecc.jp/emg/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-                  ANPIC - 安否確認システム
-                </a>
-              </li>
-              <li>
-                <a href="https://m365.cloud.microsoft/apps?auth=2" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-                  Office365のページ
-                </a>
-              </li>
-            </ul>
+            <h2 className="text-xl font-bold mb-4">書類の処理状況</h2>
+            {documentsLoading && <p>読み込み中...</p>}
+            {documentsError && <p className="text-red-500">{documentsError}</p>}
+            {!documentsLoading && !documentsError && (
+              <ul className="space-y-2">
+                {documentCounts.map((item) => (
+                  <li key={item.status} className="flex justify-between">
+                    <span>
+                      {item.status === 'pending' && '申請'}
+                      {item.status === 'approved' && '承認済み'}
+                      {item.status === 'rejected' && '却下'}
+                      {item.status === 'draft' && '下書き'}
+                    </span>
+                    <span className={`px-2 py-1 rounded text-sm ${
+                      item.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                      item.status === 'approved' ? 'bg-green-100 text-green-800' :
+                      item.status === 'rejected' ? 'bg-red-100 text-red-800' :
+                      'bg-gray-100 text-gray-800'
+                    }`}>
+                      {item.count}件
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
 
           <div className="bg-white p-6 rounded-lg shadow">
-            <h2 className="text-xl font-bold mb-4">書類の処理状況</h2>
+            <h2 className="text-xl font-bold mb-4">勤務状況</h2>
             <ul className="space-y-2">
-              <li className="flex justify-between">
-                <span>申請</span>
-                <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-sm">2件</span>
+              <li>
+                <Link to="/attendance/report" className="text-blue-600 hover:underline">
+                  勤怠報告ページ
+                </Link>
               </li>
-              <li className="flex justify-between">
-                <span>決裁（勤務届以外）</span>
-                <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-sm">1件</span>
-              </li>
-              <li className="flex justify-between">
-                <span>決裁（勤務届）</span>
-                <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm">1件</span>
+              <li>
+                <Link to="/attendance/schedule" className="text-blue-600 hover:underline">
+                  勤務予定設定ページ
+                </Link>
               </li>
             </ul>
           </div>

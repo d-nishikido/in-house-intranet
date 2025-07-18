@@ -17,6 +17,6 @@ describe('NotFound Component', () => {
   test('renders home page link', () => {
     renderWithRouter(<NotFound />);
     
-    expect(screen.getByText('ホームに戻る')).toBeInTheDocument();
+    expect(screen.getByText('ホームページに戻る')).toBeInTheDocument();
   });
 });
