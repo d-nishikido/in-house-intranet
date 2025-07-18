@@ -4,7 +4,13 @@ const jwt = require('jsonwebtoken');
 const router = express.Router();
 const db = require('../config/database');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
+const JWT_SECRET = process.env.JWT_SECRET || (() => {
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error('JWT_SECRET environment variable is required in production');
+  }
+  console.warn('Warning: Using default JWT secret in development mode');
+  return 'dev-secret-key-change-in-production';
+})();
 
 // Login endpoint
 router.post('/login', async (req, res) => {
@@ -27,9 +33,8 @@ router.post('/login', async (req, res) => {
 
     const user = result.rows[0];
 
-    // For now, we'll use a simple password check since password_hash doesn't exist in DB yet
-    // In production, this should be properly hashed
-    const isValidPassword = password === 'password123' || (user.password_hash && await bcrypt.compare(password, user.password_hash));
+    // Verify password using bcrypt
+    const isValidPassword = await bcrypt.compare(password, user.password_hash);
 
     if (!isValidPassword) {
       return res.status(401).json({ error: 'Invalid credentials' });
@@ -63,6 +68,17 @@ router.post('/login', async (req, res) => {
     });
   } catch (error) {
     console.error('Login error:', error);
+    
+    // Handle specific database errors
+    if (error.code === 'ECONNREFUSED') {
+      return res.status(503).json({ error: 'Database connection failed' });
+    }
+    
+    // Handle JWT errors
+    if (error.name === 'JsonWebTokenError') {
+      return res.status(401).json({ error: 'Invalid token' });
+    }
+    
     res.status(500).json({ error: 'Internal server error' });
   }
 });

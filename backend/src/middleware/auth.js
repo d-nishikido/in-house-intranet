@@ -1,7 +1,13 @@
 const jwt = require('jsonwebtoken');
 const db = require('../config/database');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
+const JWT_SECRET = process.env.JWT_SECRET || (() => {
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error('JWT_SECRET environment variable is required in production');
+  }
+  console.warn('Warning: Using default JWT secret in development mode');
+  return 'dev-secret-key-change-in-production';
+})();
 
 // Middleware to verify JWT token
 const authenticateToken = (req, res, next) => {

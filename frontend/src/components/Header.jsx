@@ -1,26 +1,26 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 
-const Header = () => {
+const Header = React.memo(() => {
   const { user, logout } = useAuth();
 
-  const getDisplayName = () => {
+  const displayName = useMemo(() => {
     if (user?.name) {
       return `${user.name}さんのページ`;
     }
     return 'ユーザーのページ';
-  };
+  }, [user?.name]);
 
-  const getTodayDate = () => {
+  const todayDate = useMemo(() => {
     return new Date().toLocaleDateString('ja-JP', {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
       weekday: 'long'
     });
-  };
+  }, []);
 
-  const getPaidLeavePromotionDay = () => {
+  const paidLeavePromotionDay = useMemo(() => {
     const today = new Date();
     const currentMonth = today.getMonth();
     const currentDate = today.getDate();
@@ -33,29 +33,29 @@ const Header = () => {
     }
     
     return `定時退社推奨日: ${thirdFriday.toLocaleDateString('ja-JP', { month: 'long', day: 'numeric' })}`;
-  };
+  }, []);
 
-  const getThirdFriday = (year, month) => {
+  const getThirdFriday = useCallback((year, month) => {
     const firstDay = new Date(year, month, 1);
     const firstFriday = new Date(year, month, 1 + (5 - firstDay.getDay() + 7) % 7);
     return new Date(year, month, firstFriday.getDate() + 14);
-  };
+  }, []);
 
-  const handleLogout = () => {
+  const handleLogout = useCallback(() => {
     logout();
-  };
+  }, [logout]);
 
   return (
     <header className="bg-blue-600 text-white p-4">
       <div className="container mx-auto flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold">{getDisplayName()}</h1>
-          <p className="text-blue-100">今日の日付: {getTodayDate()}</p>
+          <h1 className="text-2xl font-bold">{displayName}</h1>
+          <p className="text-blue-100">今日の日付: {todayDate}</p>
           <p className="text-blue-100 text-sm">
             <a href="/calendar" className="hover:underline mr-4">
               📅 カレンダー
             </a>
-            <span className="text-yellow-200">{getPaidLeavePromotionDay()}</span>
+            <span className="text-yellow-200">{paidLeavePromotionDay}</span>
           </p>
         </div>
         <div className="flex items-center space-x-4">
@@ -75,6 +75,6 @@ const Header = () => {
       </div>
     </header>
   );
-};
+});
 
 export default Header;

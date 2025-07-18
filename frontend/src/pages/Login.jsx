@@ -25,7 +25,7 @@ const Login = () => {
       await login(email, password);
       navigate('/');
     } catch (error) {
-      setError(error.response?.data?.error || 'ログインに失敗しました');
+      setError(error.message || 'ログインに失敗しました');
     } finally {
       setLoading(false);
     }

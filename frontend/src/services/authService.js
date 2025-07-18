@@ -4,17 +4,27 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
 
 const authService = {
   login: async (email, password) => {
-    const response = await axios.post(`${API_URL}/api/auth/login`, {
-      email,
-      password
-    });
-    
-    if (response.data.token) {
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('user', JSON.stringify(response.data.user));
+    try {
+      const response = await axios.post(`${API_URL}/api/auth/login`, {
+        email,
+        password
+      });
+      
+      if (response.data.token) {
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('user', JSON.stringify(response.data.user));
+      }
+      
+      return response.data;
+    } catch (error) {
+      if (error.response?.data?.error) {
+        throw new Error(error.response.data.error);
+      } else if (error.code === 'NETWORK_ERROR' || error.code === 'ECONNREFUSED') {
+        throw new Error('ネットワークエラー: サーバーに接続できません');
+      } else {
+        throw new Error('ログインに失敗しました');
+      }
     }
-    
-    return response.data;
   },
 
   logout: () => {
@@ -57,7 +67,12 @@ const authService = {
       return response.data;
     } catch (error) {
       console.error('Failed to refresh user:', error);
-      authService.logout();
+      
+      // If token is invalid or expired, logout the user
+      if (error.response?.status === 401 || error.response?.status === 403) {
+        authService.logout();
+      }
+      
       return null;
     }
   }
