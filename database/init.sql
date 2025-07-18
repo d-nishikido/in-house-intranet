@@ -44,6 +44,19 @@ CREATE TABLE IF NOT EXISTS documents (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- External links table
+CREATE TABLE IF NOT EXISTS external_links (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
+    url VARCHAR(500) NOT NULL,
+    description TEXT,
+    category VARCHAR(50),
+    is_active BOOLEAN DEFAULT true,
+    access_count INTEGER DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Sample data for testing
 INSERT INTO organizations (name) VALUES 
 ('管理本部'),
@@ -69,3 +82,10 @@ INSERT INTO documents (title, type, status, content, created_by) VALUES
 ('PC持出申請', 'device', 'approved', 'ノートPC持出申請書', 1),
 ('有給申請', 'leave', 'pending', '有給休暇申請書', 3),
 ('経費精算', 'expense', 'pending', '出張費精算書', 2);
+
+INSERT INTO external_links (name, url, description, category) VALUES 
+('健康あんしんコネクト', 'https://app.uconne.jp/', '健康管理アプリ', 'health'),
+('HENNGE One 一時預かり確認', 'https://console.mo.hdems.com/#/eandm.co.jp/', 'セキュアファイル管理', 'security'),
+('HENNGE One セキュアストレージ', 'https://transfer.hennge.com/', 'ファイル転送サービス', 'security'),
+('ANPIC 安否確認システム', 'https://anpic-v3.jecc.jp/emg/', '緊急時安否確認', 'emergency'),
+('Office365 ページ', 'https://m365.cloud.microsoft/apps?auth=2', 'Microsoft 365 アプリ', 'office');
