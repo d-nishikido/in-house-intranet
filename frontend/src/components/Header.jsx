@@ -20,6 +20,12 @@ const Header = React.memo(() => {
     });
   }, []);
 
+  const getThirdFriday = useCallback((year, month) => {
+    const firstDay = new Date(year, month, 1);
+    const firstFriday = new Date(year, month, 1 + (5 - firstDay.getDay() + 7) % 7);
+    return new Date(year, month, firstFriday.getDate() + 14);
+  }, []);
+
   const paidLeavePromotionDay = useMemo(() => {
     const today = new Date();
     const currentMonth = today.getMonth();
@@ -33,12 +39,6 @@ const Header = React.memo(() => {
     }
     
     return `定時退社推奨日: ${thirdFriday.toLocaleDateString('ja-JP', { month: 'long', day: 'numeric' })}`;
-  }, []);
-
-  const getThirdFriday = useCallback((year, month) => {
-    const firstDay = new Date(year, month, 1);
-    const firstFriday = new Date(year, month, 1 + (5 - firstDay.getDay() + 7) % 7);
-    return new Date(year, month, firstFriday.getDate() + 14);
   }, []);
 
   const handleLogout = useCallback(() => {
