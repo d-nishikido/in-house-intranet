@@ -117,3 +117,6 @@ in-house-intranet/
 - ファイルアップロード機能
 - 通知システム
 - 各種申請・承認ワークフロー
+
+## サンプルアカウント
+- tanaka@company.com
