@@ -4,7 +4,7 @@
   "description": "MCP server configuration for Playwright E2E tests",
   "server": {
     "command": "npx",
-    "args": ["@modelcontextprotocol/server-playwright", "start"],
+    "args": ["mcp-playwright", "start"],
     "env": {
       "PLAYWRIGHT_BROWSERS_PATH": "./browsers",
       "NODE_ENV": "test"
