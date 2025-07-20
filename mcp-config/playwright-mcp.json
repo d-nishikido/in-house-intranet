@@ -1,0 +1,44 @@
+{
+  "name": "playwright-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP server configuration for Playwright E2E tests",
+  "server": {
+    "command": "npx",
+    "args": ["mcp-playwright", "start"],
+    "env": {
+      "PLAYWRIGHT_BROWSERS_PATH": "./browsers",
+      "NODE_ENV": "test"
+    }
+  },
+  "capabilities": {
+    "browser": {
+      "launch": true,
+      "contexts": true,
+      "pages": true,
+      "screenshots": true,
+      "pdf": true
+    },
+    "test": {
+      "parallel": true,
+      "retry": true,
+      "trace": true,
+      "video": true
+    }
+  },
+  "config": {
+    "baseURL": "http://localhost:3000",
+    "timeout": 30000,
+    "retries": 2,
+    "workers": 4,
+    "reporter": ["html", "json"],
+    "use": {
+      "headless": true,
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "ignoreHTTPSErrors": true,
+      "video": "on-first-retry"
+    }
+  }
+}
