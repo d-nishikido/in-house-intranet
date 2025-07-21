@@ -8,6 +8,9 @@ import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import AnnouncementDetail from './pages/AnnouncementDetail';
 import AttendanceReport from './pages/AttendanceReport';
+import Documents from './pages/Documents';
+import DocumentDetail from './pages/DocumentDetail';
+import DocumentForm from './pages/DocumentForm';
 
 function App() {
   return (
@@ -29,6 +32,26 @@ function App() {
             <Route path="/attendance/report" element={
               <ProtectedRoute>
                 <AttendanceReport />
+              </ProtectedRoute>
+            } />
+            <Route path="/documents" element={
+              <ProtectedRoute>
+                <Documents />
+              </ProtectedRoute>
+            } />
+            <Route path="/documents/new" element={
+              <ProtectedRoute>
+                <DocumentForm />
+              </ProtectedRoute>
+            } />
+            <Route path="/documents/:id" element={
+              <ProtectedRoute>
+                <DocumentDetail />
+              </ProtectedRoute>
+            } />
+            <Route path="/documents/:id/edit" element={
+              <ProtectedRoute>
+                <DocumentForm />
               </ProtectedRoute>
             } />
             <Route path="*" element={<NotFound />} />

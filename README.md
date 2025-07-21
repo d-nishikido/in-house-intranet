@@ -24,7 +24,7 @@ cp .env.example .env
 
 3. Docker環境の起動
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 4. アプリケーションにアクセス
@@ -37,13 +37,13 @@ docker-compose up -d
 ### 全体
 ```bash
 # 全サービス起動
-docker-compose up
+docker compose up
 
 # 全サービス停止
-docker-compose down
+docker compose down
 
 # ログ確認
-docker-compose logs -f
+docker compose logs -f
 ```
 
 ### Backend
