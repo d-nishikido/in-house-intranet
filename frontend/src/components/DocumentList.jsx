@@ -138,7 +138,6 @@ const DocumentList = () => {
                     <p>
                       タイプ: {document.type} | 作成者: {document.created_by_name} | 
                       作成日: {new Date(document.created_at).toLocaleDateString('ja-JP')}
-                      {document.file_count > 0 && ` | ファイル数: ${document.file_count}`}
                     </p>
                   </div>
                 </div>

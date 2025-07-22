@@ -38,14 +38,10 @@ const upload = multer({
 router.get('/', async (req, res) => {
   try {
     const result = await db.query(`
-      SELECT d.id, d.title, d.type, d.status, d.created_at, d.due_date, d.file_count,
-             e.name as created_by_name, 
-             a.name as approved_by_name,
-             r.name as rejected_by_name
+      SELECT d.id, d.title, d.type, d.status, d.created_at,
+             e.name as created_by_name
       FROM documents d
       LEFT JOIN employees e ON d.created_by = e.id
-      LEFT JOIN employees a ON d.approved_by = a.id
-      LEFT JOIN employees r ON d.rejected_by = r.id
       ORDER BY d.created_at DESC
     `);
     res.json(result.rows);
