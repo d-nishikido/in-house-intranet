@@ -21,7 +21,7 @@ const Home = () => {
       try {
         setLoading(true);
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL || 'http://localhost:3001'}/api/announcements`,
+          `${process.env.REACT_APP_API_URL || 'http://localhost:3001/api'}/announcements`,
           { params: { page: currentPage, limit: 5 } }
         );
         setAnnouncements(response.data.data);
@@ -42,7 +42,7 @@ const Home = () => {
       try {
         setLinksLoading(true);
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL || 'http://localhost:3001'}/api/external-links`
+          `${process.env.REACT_APP_API_URL || 'http://localhost:3001/api'}/external-links`
         );
         setExternalLinks(response.data);
       } catch (err) {
@@ -61,7 +61,7 @@ const Home = () => {
       try {
         setDocumentsLoading(true);
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL || 'http://localhost:3001'}/api/documents/status-count`
+          `${process.env.REACT_APP_API_URL || 'http://localhost:3001/api'}/documents/status-count`
         );
         setDocumentCounts(response.data);
       } catch (err) {

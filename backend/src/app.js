@@ -41,13 +41,27 @@ app.get('/', (req, res) => {
   });
 });
 
+// Handle SPA routing - redirect non-API routes to frontend
+app.get('*', (req, res, next) => {
+  if (req.url.startsWith('/api/')) {
+    return next();
+  }
+  
+  // For non-API routes, return a message indicating this is an API server
+  res.status(404).json({ 
+    error: 'This is the API server. Frontend routes should be handled by the React app.',
+    requestedUrl: req.url 
+  });
+});
+
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Something went wrong!' });
 });
 
 app.use((req, res) => {
-  res.status(404).json({ error: 'Route not found' });
+  console.log(`404 - API Route not found: ${req.method} ${req.url}`);
+  res.status(404).json({ error: 'API Route not found' });
 });
 
 const startServer = async () => {
