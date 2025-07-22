@@ -10,6 +10,7 @@ const SubHeader = React.memo(() => {
     { name: '意見箱', href: '/suggestions', path: '/suggestions' },
     { name: '掲示板', href: '/board', path: '/board' },
     { name: '社員名簿', href: '/directory', path: '/directory' },
+    { name: '提出書類', href: '/documents', path: '/documents' },
     { name: '監査ページ', href: '/audit', path: '/audit' },
     { name: 'お気に入りに追加', href: '/favorites', path: '/favorites' },
     { name: 'お問い合わせ', href: '/contact', path: '/contact' }
