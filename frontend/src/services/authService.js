@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
 
 const authService = {
   login: async (email, password) => {
     try {
-      const response = await axios.post(`${API_URL}/api/auth/login`, {
+      const response = await axios.post(`${API_URL}/auth/login`, {
         email,
         password
       });
@@ -59,7 +59,7 @@ const authService = {
       const token = localStorage.getItem('token');
       if (!token) return null;
 
-      const response = await axios.get(`${API_URL}/api/auth/me`, {
+      const response = await axios.get(`${API_URL}/auth/me`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 

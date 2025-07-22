@@ -40,6 +40,12 @@ CREATE TABLE IF NOT EXISTS documents (
     status VARCHAR(20) DEFAULT 'pending',
     content TEXT,
     created_by INTEGER REFERENCES employees(id),
+    approved_by INTEGER REFERENCES employees(id),
+    rejected_by INTEGER REFERENCES employees(id),
+    submitted_at TIMESTAMP,
+    department_id INTEGER REFERENCES organizations(id),
+    due_date DATE,
+    file_count INTEGER DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -55,6 +61,37 @@ CREATE TABLE IF NOT EXISTS external_links (
     access_count INTEGER DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Document files table
+CREATE TABLE IF NOT EXISTS document_files (
+    id SERIAL PRIMARY KEY,
+    document_id INTEGER REFERENCES documents(id) ON DELETE CASCADE,
+    file_name VARCHAR(255) NOT NULL,
+    file_path VARCHAR(500) NOT NULL,
+    file_size INTEGER NOT NULL,
+    mime_type VARCHAR(100) NOT NULL,
+    uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Document approvals table
+CREATE TABLE IF NOT EXISTS document_approvals (
+    id SERIAL PRIMARY KEY,
+    document_id INTEGER REFERENCES documents(id) ON DELETE CASCADE,
+    approver_id INTEGER REFERENCES employees(id),
+    status VARCHAR(20) NOT NULL, -- approved, rejected, pending
+    comments TEXT,
+    processed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Document templates table
+CREATE TABLE IF NOT EXISTS document_templates (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
+    type VARCHAR(50) NOT NULL,
+    template_data JSONB,
+    is_active BOOLEAN DEFAULT true,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Sample data for testing
@@ -89,3 +126,9 @@ INSERT INTO external_links (name, url, description, category) VALUES
 ('HENNGE One セキュアストレージ', 'https://transfer.hennge.com/', 'ファイル転送サービス', 'security'),
 ('ANPIC 安否確認システム', 'https://anpic-v3.jecc.jp/emg/', '緊急時安否確認', 'emergency'),
 ('Office365 ページ', 'https://m365.cloud.microsoft/apps?auth=2', 'Microsoft 365 アプリ', 'office');
+
+-- Sample document templates
+INSERT INTO document_templates (name, type, template_data, is_active) VALUES 
+('勤務届テンプレート', 'attendance_report', '{"fields": [{"name": "勤務日", "type": "date", "required": true}, {"name": "開始時間", "type": "time", "required": true}, {"name": "終了時間", "type": "time", "required": true}, {"name": "休憩時間", "type": "number", "required": true}]}', true),
+('PC持出申請テンプレート', 'device_application', '{"fields": [{"name": "機器名", "type": "text", "required": true}, {"name": "持出期間", "type": "daterange", "required": true}, {"name": "目的", "type": "textarea", "required": true}, {"name": "持出先", "type": "text", "required": true}]}', true),
+('キャリア面談シートテンプレート', 'career_review', '{"fields": [{"name": "面談日", "type": "date", "required": true}, {"name": "自己評価", "type": "rating", "required": true}, {"name": "目標設定", "type": "textarea", "required": true}, {"name": "課題", "type": "textarea", "required": false}]}', true);

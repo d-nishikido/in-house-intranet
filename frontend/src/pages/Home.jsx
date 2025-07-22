@@ -21,7 +21,7 @@ const Home = () => {
       try {
         setLoading(true);
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL || 'http://localhost:3001'}/api/announcements`,
+          `${process.env.REACT_APP_API_URL || 'http://localhost:3001/api'}/announcements`,
           { params: { page: currentPage, limit: 5 } }
         );
         setAnnouncements(response.data.data);
@@ -42,7 +42,7 @@ const Home = () => {
       try {
         setLinksLoading(true);
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL || 'http://localhost:3001'}/api/external-links`
+          `${process.env.REACT_APP_API_URL || 'http://localhost:3001/api'}/external-links`
         );
         setExternalLinks(response.data);
       } catch (err) {
@@ -61,7 +61,7 @@ const Home = () => {
       try {
         setDocumentsLoading(true);
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL || 'http://localhost:3001'}/api/documents/status-count`
+          `${process.env.REACT_APP_API_URL || 'http://localhost:3001/api'}/documents/status-count`
         );
         setDocumentCounts(response.data);
       } catch (err) {
@@ -150,26 +150,36 @@ const Home = () => {
             {documentsLoading && <p>読み込み中...</p>}
             {documentsError && <p className="text-red-500">{documentsError}</p>}
             {!documentsLoading && !documentsError && (
-              <ul className="space-y-2">
-                {documentCounts.map((item) => (
-                  <li key={item.status} className="flex justify-between">
-                    <span>
-                      {item.status === 'pending' && '申請'}
-                      {item.status === 'approved' && '承認済み'}
-                      {item.status === 'rejected' && '却下'}
-                      {item.status === 'draft' && '下書き'}
-                    </span>
-                    <span className={`px-2 py-1 rounded text-sm ${
-                      item.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                      item.status === 'approved' ? 'bg-green-100 text-green-800' :
-                      item.status === 'rejected' ? 'bg-red-100 text-red-800' :
-                      'bg-gray-100 text-gray-800'
-                    }`}>
-                      {item.count}件
-                    </span>
-                  </li>
-                ))}
-              </ul>
+              <>
+                <ul className="space-y-2">
+                  {documentCounts.map((item) => (
+                    <li key={item.status} className="flex justify-between">
+                      <span>
+                        {item.status === 'pending' && '申請'}
+                        {item.status === 'approved' && '承認済み'}
+                        {item.status === 'rejected' && '却下'}
+                        {item.status === 'draft' && '下書き'}
+                      </span>
+                      <span className={`px-2 py-1 rounded text-sm ${
+                        item.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                        item.status === 'approved' ? 'bg-green-100 text-green-800' :
+                        item.status === 'rejected' ? 'bg-red-100 text-red-800' :
+                        'bg-gray-100 text-gray-800'
+                      }`}>
+                        {item.count}件
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-4 pt-4 border-t">
+                  <Link to="/documents" className="text-blue-600 hover:underline flex items-center">
+                    書類一覧を見る
+                    <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </Link>
+                </div>
+              </>
             )}
           </div>
 
