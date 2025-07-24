@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { FaArrowLeft, FaConstruction } from 'react-icons/fa';
+import { FaArrowLeft, FaHammer } from 'react-icons/fa';
 import './MenuItemPage.css';
 
 const MenuItemPage = ({ title, categoryName }) => {
@@ -98,7 +98,7 @@ const MenuItemPage = ({ title, categoryName }) => {
 
       <div className="menu-item-content">
         <div className="under-construction">
-          <FaConstruction className="construction-icon" />
+          <FaHammer className="construction-icon" />
           <h2>工事中</h2>
           <p>このページは現在準備中です。</p>
           <p>近日中に公開予定です。しばらくお待ちください。</p>
