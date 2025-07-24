@@ -187,6 +187,11 @@ const Home = () => {
             <h2 className="text-xl font-bold mb-4">勤務状況</h2>
             <ul className="space-y-2">
               <li>
+                <Link to="/attendance/entry" className="text-blue-600 hover:underline">
+                  勤怠報告入力
+                </Link>
+              </li>
+              <li>
                 <Link to="/attendance/report" className="text-blue-600 hover:underline">
                   勤怠報告ページ
                 </Link>

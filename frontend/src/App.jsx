@@ -8,6 +8,7 @@ import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import AnnouncementDetail from './pages/AnnouncementDetail';
 import AttendanceReport from './pages/AttendanceReport';
+import AttendanceEntry from './pages/AttendanceEntry';
 import Documents from './pages/Documents';
 import DocumentDetail from './pages/DocumentDetail';
 import DocumentForm from './pages/DocumentForm';
@@ -34,6 +35,11 @@ function App() {
             <Route path="/attendance/report" element={
               <ProtectedRoute>
                 <AttendanceReport />
+              </ProtectedRoute>
+            } />
+            <Route path="/attendance/entry" element={
+              <ProtectedRoute>
+                <AttendanceEntry />
               </ProtectedRoute>
             } />
             <Route path="/documents" element={
