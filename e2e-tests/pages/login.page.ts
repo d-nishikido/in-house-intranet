@@ -10,11 +10,11 @@ export class LoginPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.emailInput = page.getByPlaceholder('メールアドレス');
-    this.passwordInput = page.getByPlaceholder('パスワード');
+    this.emailInput = page.locator('#email');
+    this.passwordInput = page.locator('#password');
     this.loginButton = page.getByRole('button', { name: 'ログイン' });
-    this.errorMessage = page.getByRole('alert');
-    this.pageTitle = page.getByRole('heading', { name: 'ログイン' });
+    this.errorMessage = page.locator('.bg-error-50');
+    this.pageTitle = page.getByRole('heading', { name: '社内イントラネット' });
   }
 
   async goto() {

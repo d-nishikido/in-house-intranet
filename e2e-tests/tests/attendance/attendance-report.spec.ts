@@ -132,8 +132,8 @@ test.describe('勤怠報告ページ', () => {
     await page.goto('http://localhost:3000/attendance/report');
     
     // Set date range with no data
-    await page.fill('input[type="date"]').first(), '2025-01-01');
-    await page.fill('input[type="date"]').last(), '2025-01-02');
+    await page.fill('input[type="date"]:first-of-type', '2025-01-01');
+    await page.fill('input[type="date"]:last-of-type', '2025-01-02');
     await page.click('button:has-text("検索")');
     
     // Wait for search to complete
