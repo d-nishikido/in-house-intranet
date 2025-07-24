@@ -17,6 +17,13 @@ Create an in-house intranet web system.
 ### Environment
 - Docker
 
+## Test
+- Unit Test（Jest）
+- E2Eテスト（Playwright(MCP)）
+  - E2E test mcp__playwright__browser_*
+  関数を使用して実行する
+  - ブラウザ操作は全てMCPツール経由で行う
+
 ## Functional Requirements
 
 ### Header

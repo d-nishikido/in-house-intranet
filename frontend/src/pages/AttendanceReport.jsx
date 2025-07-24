@@ -69,23 +69,56 @@ const AttendanceReport = () => {
     return time.substring(0, 5); // HH:MM format
   };
 
-  const calculateWorkingHours = (checkIn, checkOut, breakStart, breakEnd) => {
+  const formatBreakTimes = (breakTimes, legacyBreakStart, legacyBreakEnd) => {
+    if (breakTimes && breakTimes.length > 0) {
+      // Use new break_times data
+      return breakTimes.map((breakTime, index) => (
+        <div key={index} className="text-xs">
+          {formatTime(breakTime.start_time)} - {formatTime(breakTime.end_time)}
+        </div>
+      ));
+    } else if (legacyBreakStart && legacyBreakEnd) {
+      // Fallback to legacy break time for old records
+      return (
+        <div className="text-xs">
+          {formatTime(legacyBreakStart)} - {formatTime(legacyBreakEnd)}
+        </div>
+      );
+    }
+    return '-';
+  };
+
+  const calculateWorkingHours = (checkIn, checkOut, breakTimes, legacyBreakStart, legacyBreakEnd) => {
     if (!checkIn || !checkOut) return '-';
     
     const checkInTime = new Date(`2000-01-01T${checkIn}`);
     const checkOutTime = new Date(`2000-01-01T${checkOut}`);
-    const breakStartTime = breakStart ? new Date(`2000-01-01T${breakStart}`) : null;
-    const breakEndTime = breakEnd ? new Date(`2000-01-01T${breakEnd}`) : null;
     
     let totalMinutes = (checkOutTime - checkInTime) / (1000 * 60);
     
-    if (breakStartTime && breakEndTime) {
+    // Calculate total break time from multiple break periods
+    if (breakTimes && breakTimes.length > 0) {
+      // Use new break_times data
+      breakTimes.forEach(breakTime => {
+        if (breakTime.start_time && breakTime.end_time) {
+          const breakStart = new Date(`2000-01-01T${breakTime.start_time}`);
+          const breakEnd = new Date(`2000-01-01T${breakTime.end_time}`);
+          const breakMinutes = (breakEnd - breakStart) / (1000 * 60);
+          if (breakMinutes > 0) {
+            totalMinutes -= breakMinutes;
+          }
+        }
+      });
+    } else if (legacyBreakStart && legacyBreakEnd) {
+      // Fallback to legacy break time for old records
+      const breakStartTime = new Date(`2000-01-01T${legacyBreakStart}`);
+      const breakEndTime = new Date(`2000-01-01T${legacyBreakEnd}`);
       const breakMinutes = (breakEndTime - breakStartTime) / (1000 * 60);
       totalMinutes -= breakMinutes;
     }
     
     const hours = Math.floor(totalMinutes / 60);
-    const minutes = totalMinutes % 60;
+    const minutes = Math.round(totalMinutes % 60);
     
     return `${hours}:${minutes.toString().padStart(2, '0')}`;
   };
@@ -216,11 +249,11 @@ const AttendanceReport = () => {
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                         {formatTime(record.check_out_time)}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {formatTime(record.break_start_time)} - {formatTime(record.break_end_time)}
+                      <td className="px-6 py-4 text-sm text-gray-900">
+                        {formatBreakTimes(record.break_times, record.break_start_time, record.break_end_time)}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {calculateWorkingHours(record.check_in_time, record.check_out_time, record.break_start_time, record.break_end_time)}
+                        {calculateWorkingHours(record.check_in_time, record.check_out_time, record.break_times, record.break_start_time, record.break_end_time)}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                         {record.overtime_hours || 0}時間
