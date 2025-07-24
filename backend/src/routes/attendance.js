@@ -25,7 +25,20 @@ router.get('/records/:employeeId', authenticateToken, async (req, res) => {
     query += ' ORDER BY ar.date DESC';
     
     const result = await db.query(query, params);
-    res.json(result.rows);
+    const attendanceRecords = result.rows;
+    
+    // Fetch break times for each record
+    for (let record of attendanceRecords) {
+      const breakTimesResult = await db.query(
+        `SELECT start_time, end_time FROM break_times 
+         WHERE attendance_record_id = $1 
+         ORDER BY start_time`,
+        [record.id]
+      );
+      record.break_times = breakTimesResult.rows;
+    }
+    
+    res.json(attendanceRecords);
   } catch (error) {
     console.error('Error fetching attendance records:', error);
     res.status(500).json({ error: 'Internal server error' });
@@ -62,31 +75,57 @@ router.get('/schedule/:employeeId', async (req, res) => {
 });
 
 // POST create attendance record
-router.post('/records', async (req, res) => {
+router.post('/records', authenticateToken, async (req, res) => {
+  const client = await db.pool.connect();
+  
   try {
+    await client.query('BEGIN');
+    
     const { 
       employee_id, 
       date, 
       check_in_time, 
       check_out_time, 
-      break_start_time, 
-      break_end_time, 
+      break_times, // New format: array of {startTime, endTime}
       overtime_hours, 
       notes 
     } = req.body;
     
-    const result = await db.query(
+    console.log('POST /attendance/records - Request body:', JSON.stringify(req.body, null, 2));
+    console.log('Break times array:', break_times);
+    
+    // Insert main attendance record (keeping deprecated break columns as null)
+    const result = await client.query(
       `INSERT INTO attendance_records 
        (employee_id, date, check_in_time, check_out_time, break_start_time, break_end_time, overtime_hours, notes) 
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8) 
+       VALUES ($1, $2, $3, $4, NULL, NULL, $5, $6) 
        RETURNING *`,
-      [employee_id, date, check_in_time, check_out_time, break_start_time, break_end_time, overtime_hours, notes]
+      [employee_id, date, check_in_time, check_out_time, overtime_hours, notes]
     );
     
+    const attendanceRecordId = result.rows[0].id;
+    
+    // Insert break times into separate table
+    if (break_times && Array.isArray(break_times) && break_times.length > 0) {
+      for (const breakTime of break_times) {
+        if (breakTime.startTime && breakTime.endTime) {
+          await client.query(
+            `INSERT INTO break_times (attendance_record_id, start_time, end_time) 
+             VALUES ($1, $2, $3)`,
+            [attendanceRecordId, breakTime.startTime, breakTime.endTime]
+          );
+        }
+      }
+    }
+    
+    await client.query('COMMIT');
     res.status(201).json(result.rows[0]);
   } catch (error) {
+    await client.query('ROLLBACK');
     console.error('Error creating attendance record:', error);
     res.status(500).json({ error: 'Internal server error' });
+  } finally {
+    client.release();
   }
 });
 
