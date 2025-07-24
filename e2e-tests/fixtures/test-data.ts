@@ -71,3 +71,161 @@ export const navigationLinks = {
     { text: 'お問い合わせ', href: '/contact' }
   ]
 };
+
+export const testAttendanceData = {
+  summary: {
+    totalDays: 8,
+    approvedDays: 6,
+    pendingDays: 2,
+    totalOvertime: 2.50
+  },
+  records: [
+    {
+      id: 1,
+      date: '2025-07-24',
+      checkInTime: '09:00',
+      checkOutTime: null,
+      breakStartTime: null,
+      breakEndTime: null,
+      overtimeHours: 0.00,
+      status: 'pending',
+      notes: '勤務中'
+    },
+    {
+      id: 2,
+      date: '2025-07-23',
+      checkInTime: '09:00',
+      checkOutTime: '18:00',
+      breakStartTime: '12:00',
+      breakEndTime: '13:00',
+      overtimeHours: 0.00,
+      status: 'approved',
+      notes: '通常勤務'
+    },
+    {
+      id: 3,
+      date: '2025-07-22',
+      checkInTime: '09:00',
+      checkOutTime: '18:00',
+      breakStartTime: '12:00',
+      breakEndTime: '13:00',
+      overtimeHours: 0.00,
+      status: 'approved',
+      notes: '通常勤務'
+    },
+    {
+      id: 4,
+      date: '2025-07-21',
+      checkInTime: '09:00',
+      checkOutTime: '18:00',
+      breakStartTime: '12:00',
+      breakEndTime: '13:00',
+      overtimeHours: 0.00,
+      status: 'approved',
+      notes: '通常勤務'
+    },
+    {
+      id: 5,
+      date: '2025-07-20',
+      checkInTime: '09:05',
+      checkOutTime: '18:15',
+      breakStartTime: '12:00',
+      breakEndTime: '13:00',
+      overtimeHours: 0.00,
+      status: 'approved',
+      notes: null
+    },
+    {
+      id: 6,
+      date: '2025-07-19',
+      checkInTime: '09:00',
+      checkOutTime: '18:00',
+      breakStartTime: '12:00',
+      breakEndTime: '13:00',
+      overtimeHours: 0.00,
+      status: 'approved',
+      notes: null
+    },
+    {
+      id: 7,
+      date: '2025-07-03',
+      checkInTime: '08:45',
+      checkOutTime: '19:00',
+      breakStartTime: '12:00',
+      breakEndTime: '13:00',
+      overtimeHours: 2.00,
+      status: 'pending',
+      notes: '残業あり'
+    },
+    {
+      id: 8,
+      date: '2025-07-02',
+      checkInTime: '09:15',
+      checkOutTime: '18:30',
+      breakStartTime: '12:00',
+      breakEndTime: '13:00',
+      overtimeHours: 0.50,
+      status: 'approved',
+      notes: '少し遅刻'
+    },
+    {
+      id: 9,
+      date: '2025-07-01',
+      checkInTime: '09:00',
+      checkOutTime: '18:00',
+      breakStartTime: '12:00',
+      breakEndTime: '13:00',
+      overtimeHours: 0.00,
+      status: 'approved',
+      notes: '通常勤務'
+    }
+  ],
+  dateFilters: {
+    currentMonth: {
+      startDate: '2025-07-01',
+      endDate: '2025-07-31'
+    },
+    customRange: {
+      startDate: '2025-07-01',
+      endDate: '2025-07-03'
+    },
+    emptyRange: {
+      startDate: '2025-01-01',
+      endDate: '2025-01-02'
+    }
+  },
+  expectedCalculations: {
+    standardWorkDay: {
+      checkIn: '09:00',
+      checkOut: '18:00',
+      breakStart: '12:00',
+      breakEnd: '13:00',
+      expectedWorkingHours: '8:00'
+    },
+    overtimeDay: {
+      checkIn: '08:45',
+      checkOut: '19:00',
+      breakStart: '12:00',
+      breakEnd: '13:00',
+      expectedWorkingHours: '9:15',
+      expectedOvertime: 2.00
+    }
+  }
+};
+
+export const testLeaveData = {
+  summary: {
+    pendingLeaveRequests: 1
+  },
+  requests: [
+    {
+      id: 1,
+      employeeId: 1,
+      startDate: '2025-08-01',
+      endDate: '2025-08-03',
+      leaveType: 'annual_leave',
+      reason: '夏期休暇',
+      status: 'pending'
+    }
+  ]
+};

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Layout from '../components/Layout';
 import { useAuth } from '../contexts/AuthContext';
+import authService from '../services/authService';
 
 const AttendanceReport = () => {
   const { user } = useAuth();
@@ -12,6 +13,8 @@ const AttendanceReport = () => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [summary, setSummary] = useState(null);
+  
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
 
   useEffect(() => {
     // Set default dates (current month)
@@ -34,8 +37,11 @@ const AttendanceReport = () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL || 'http://localhost:3001'}/api/attendance/records/${user.id}`,
-        { params: { startDate, endDate } }
+        `${API_URL}/attendance/records/${user.id}`,
+        { 
+          params: { startDate, endDate },
+          headers: authService.getAuthHeader()
+        }
       );
       setAttendanceRecords(response.data);
     } catch (err) {
@@ -49,7 +55,8 @@ const AttendanceReport = () => {
   const fetchSummary = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL || 'http://localhost:3001'}/api/attendance/summary/${user.id}`
+        `${API_URL}/attendance/summary/${user.id}`,
+        { headers: authService.getAuthHeader() }
       );
       setSummary(response.data);
     } catch (err) {
