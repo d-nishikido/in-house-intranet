@@ -9,6 +9,7 @@ const documentTemplateRoutes = require('./document-templates');
 const organizationRoutes = require('./organizations');
 const externalLinksRoutes = require('./external-links');
 const attendanceRoutes = require('./attendance');
+const menuRoutes = require('./menu');
 
 router.use('/auth', authRoutes);
 router.use('/employees', employeeRoutes);
@@ -18,6 +19,7 @@ router.use('/document-templates', documentTemplateRoutes);
 router.use('/organizations', organizationRoutes);
 router.use('/external-links', externalLinksRoutes);
 router.use('/attendance', attendanceRoutes);
+router.use('/menu', menuRoutes);
 
 router.get('/', (req, res) => {
   res.json({ message: 'Intranet API Routes' });

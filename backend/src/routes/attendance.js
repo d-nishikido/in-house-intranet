@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../config/database');
+const { authenticateToken } = require('../middleware/auth');
 
 // GET attendance records for a specific employee
-router.get('/records/:employeeId', async (req, res) => {
+router.get('/records/:employeeId', authenticateToken, async (req, res) => {
   try {
     const { employeeId } = req.params;
     const { startDate, endDate } = req.query;
@@ -163,7 +164,7 @@ router.post('/leave-requests', async (req, res) => {
 });
 
 // GET attendance summary for dashboard
-router.get('/summary/:employeeId', async (req, res) => {
+router.get('/summary/:employeeId', authenticateToken, async (req, res) => {
   try {
     const { employeeId } = req.params;
     const currentMonth = new Date().getMonth() + 1;

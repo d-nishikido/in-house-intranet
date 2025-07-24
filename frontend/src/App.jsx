@@ -11,6 +11,8 @@ import AttendanceReport from './pages/AttendanceReport';
 import Documents from './pages/Documents';
 import DocumentDetail from './pages/DocumentDetail';
 import DocumentForm from './pages/DocumentForm';
+import MenuPage from './components/MenuPage';
+import MenuItemPage from './components/MenuItemPage';
 
 function App() {
   return (
@@ -54,6 +56,60 @@ function App() {
                 <DocumentForm />
               </ProtectedRoute>
             } />
+            
+            {/* Menu Routes */}
+            <Route path="/menu/:categoryName" element={
+              <ProtectedRoute>
+                <MenuPage />
+              </ProtectedRoute>
+            } />
+            
+            {/* Company Menu Items */}
+            <Route path="/company/organization" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/company/position-system" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/company/coco-schedule" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            
+            {/* Operations Menu Items */}
+            <Route path="/operations/work-regulations" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/operations/guidelines" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/operations/substitute-holidays" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            
+            {/* Facilities Menu Items */}
+            <Route path="/facilities/seats-extensions" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/facilities/office-info" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/facilities/management-contacts" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            
+            {/* Management Menu Items */}
+            <Route path="/management/staff" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/management/hr-announcements" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/management/personnel-info" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/management/general-affairs" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/management/company-car" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/management/eis-announcements" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            
+            {/* Procedures Menu Items */}
+            <Route path="/procedures/various-applications" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/procedures/approval-workflow" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/procedures/business-card" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/procedures/equipment-purchase" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/procedures/auto-insurance" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/procedures/ssl-vpn" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/procedures/employee-referral" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            
+            {/* Equipment Menu Items */}
+            <Route path="/equipment/phone-operation" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/equipment/video-conference" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/equipment/hdd-data-deletion" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/equipment/pc-setup" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            
+            {/* Intranet Menu Items */}
+            <Route path="/intranet/settings" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/intranet/attendance-operation" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/intranet/office365" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/intranet/email-settings" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/intranet/bulletin-board-usage" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/intranet/software-links" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>

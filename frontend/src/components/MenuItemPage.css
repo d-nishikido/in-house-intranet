@@ -1,0 +1,163 @@
+/* Menu Item Page Container */
+.menu-item-page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Menu Item Header */
+.menu-item-header {
+  border-bottom: 2px solid #f1f1f1;
+  padding-bottom: 20px;
+  margin-bottom: 30px;
+}
+
+/* Breadcrumb Navigation */
+.breadcrumb {
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: #666;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.breadcrumb-link {
+  color: #007bff;
+  text-decoration: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.breadcrumb-link:hover {
+  background-color: #f8f9fa;
+  color: #0056b3;
+}
+
+.breadcrumb-separator {
+  color: #999;
+  font-size: 12px;
+}
+
+.breadcrumb-current {
+  font-weight: 500;
+  color: #333;
+}
+
+/* Page Header Actions */
+.page-header-actions {
+  margin-bottom: 15px;
+}
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #007bff;
+  text-decoration: none;
+  font-size: 14px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.back-button:hover {
+  background-color: #f8f9fa;
+  color: #0056b3;
+}
+
+/* Menu Item Title */
+.menu-item-title {
+  font-size: 32px;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* Menu Item Content */
+.menu-item-content {
+  margin-top: 20px;
+}
+
+/* Under Construction Section */
+.under-construction {
+  text-align: center;
+  padding: 60px 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 2px dashed #dee2e6;
+}
+
+.construction-icon {
+  font-size: 48px;
+  color: #ffc107;
+  margin-bottom: 20px;
+}
+
+.under-construction h2 {
+  color: #495057;
+  margin-bottom: 15px;
+  font-size: 24px;
+}
+
+.under-construction p {
+  color: #6c757d;
+  margin: 10px 0;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .menu-item-page {
+    padding: 15px;
+  }
+  
+  .menu-item-title {
+    font-size: 28px;
+  }
+  
+  .breadcrumb {
+    font-size: 13px;
+  }
+  
+  .under-construction {
+    padding: 40px 15px;
+  }
+  
+  .construction-icon {
+    font-size: 40px;
+  }
+  
+  .under-construction h2 {
+    font-size: 20px;
+  }
+  
+  .under-construction p {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .menu-item-title {
+    font-size: 24px;
+  }
+  
+  .breadcrumb {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  
+  .breadcrumb-separator {
+    display: none;
+  }
+  
+  .breadcrumb-link,
+  .breadcrumb-current {
+    padding: 2px 4px;
+  }
+}
