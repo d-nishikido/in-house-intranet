@@ -117,7 +117,15 @@ const AttendanceReport = () => {
           <Link to="/" className="text-blue-600 hover:underline mb-4 inline-block">
             ← ホームに戻る
           </Link>
-          <h1 className="text-2xl font-bold mb-4">勤怠報告</h1>
+          <div className="flex justify-between items-center mb-4">
+            <h1 className="text-2xl font-bold">勤怠報告</h1>
+            <Link 
+              to="/attendance/entry" 
+              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-200"
+            >
+              新規勤怠入力
+            </Link>
+          </div>
         </div>
 
         {/* Summary Cards */}
