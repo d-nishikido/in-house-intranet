@@ -15,7 +15,7 @@ import {
   FaCheckCircle,
   FaTimesCircle,
   FaEdit,
-  FaTrendingUp
+  FaChartLine
 } from 'react-icons/fa';
 
 const Home = () => {
@@ -412,7 +412,7 @@ const Home = () => {
                     className="group flex items-center p-3 bg-gray-50 hover:bg-success-50 rounded-lg transition-all duration-200 border border-gray-200 hover:border-success-300"
                   >
                     <div className="w-8 h-8 bg-success-100 rounded-lg flex items-center justify-center mr-3">
-                      <FaTrendingUp className="text-success-600 text-sm" />
+                      <FaChartLine className="text-success-600 text-sm" />
                     </div>
                     <div className="flex-1">
                       <span className="font-medium text-gray-900 group-hover:text-success-700">
