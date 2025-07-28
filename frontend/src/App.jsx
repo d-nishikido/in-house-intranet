@@ -116,6 +116,54 @@ function App() {
             <Route path="/intranet/bulletin-board-usage" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
             <Route path="/intranet/software-links" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
             
+            {/* EMG Vision Menu Items */}
+            <Route path="/emg-vision/corporate-philosophy" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/emg-vision/management-policy" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/emg-vision/environmental-policy" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            
+            {/* Business Strategy Menu Items */}
+            <Route path="/business-strategy/meeting" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/business-strategy/quality-assurance" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/business-strategy/budget-planning" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/business-strategy/civil-law-amendment" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/business-strategy/subcontract-act" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            
+            {/* Compliance Menu Items */}
+            <Route path="/compliance/committee" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            
+            {/* Development Menu Items */}
+            <Route path="/development/technical-seminar" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/development/dx-task-force" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            
+            {/* Public Relations Menu Items */}
+            <Route path="/public-relations/portal" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            
+            {/* Information Security Menu Items */}
+            <Route path="/security/emg-security" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/security/win11-upgrade" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/security/test-request-2024" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            
+            {/* Recruitment Menu Items */}
+            <Route path="/recruitment/about" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            
+            {/* Education Menu Items */}
+            <Route path="/education/training-qualifications" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/education/announcements" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/education/skill-calendar" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/education/development-plan" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            
+            {/* Lists Menu Items */}
+            <Route path="/lists/attendees" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/lists/employee-count" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/lists/attendance-times" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/lists/project-numbers" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/lists/partner-attendance" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            
+            {/* Reports Menu Items */}
+            <Route path="/reports/emg-topics" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/reports/qualification-history" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            <Route path="/reports/patents-trademarks" element={<ProtectedRoute><MenuItemPage /></ProtectedRoute>} />
+            
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
