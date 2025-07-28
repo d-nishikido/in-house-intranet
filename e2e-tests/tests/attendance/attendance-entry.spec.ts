@@ -6,12 +6,15 @@ test.describe('勤怠報告入力ページ', () => {
     // Login before each test
     await page.goto('/login');
     
-    await page.fill('input[type="email"]', testUsers.validUser.email);
-    await page.fill('input[type="password"]', testUsers.validUser.password);
+    // Wait for login form to be visible
+    await page.waitForSelector('#email', { timeout: 10000 });
+    
+    await page.fill('#email', testUsers.validUser.email);
+    await page.fill('#password', testUsers.validUser.password);
     await page.click('button[type="submit"]');
     
     // Wait for login to complete and navigate to attendance entry
-    await expect(page.locator(`h1:has-text("${testUsers.validUser.name}さんのページ")`)).toBeVisible();
+    await page.waitForURL('/');
     await page.goto('/attendance/entry');
   });
 
