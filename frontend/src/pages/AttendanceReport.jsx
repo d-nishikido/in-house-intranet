@@ -4,6 +4,19 @@ import axios from 'axios';
 import Layout from '../components/Layout';
 import { useAuth } from '../contexts/AuthContext';
 import authService from '../services/authService';
+import { 
+  FaChartBar, 
+  FaCalendarAlt, 
+  FaClock, 
+  FaCheck, 
+  FaHourglass, 
+  FaPlus,
+  FaSearch,
+  FaArrowLeft,
+  FaCheckCircle,
+  FaTimesCircle,
+  FaSpinner
+} from 'react-icons/fa';
 
 const AttendanceReport = () => {
   const { user } = useAuth();
@@ -124,103 +137,173 @@ const AttendanceReport = () => {
   };
 
   const getStatusBadge = (status) => {
-    const statusColors = {
-      pending: 'bg-yellow-100 text-yellow-800',
-      approved: 'bg-green-100 text-green-800',
-      rejected: 'bg-red-100 text-red-800'
+    const statusConfig = {
+      pending: {
+        color: 'bg-warning-100 text-warning-800 border-warning-200',
+        icon: FaHourglass,
+        text: '承認待ち'
+      },
+      approved: {
+        color: 'bg-success-100 text-success-800 border-success-200',
+        icon: FaCheckCircle,
+        text: '承認済み'
+      },
+      rejected: {
+        color: 'bg-error-100 text-error-800 border-error-200',
+        icon: FaTimesCircle,
+        text: '却下'
+      }
     };
     
-    const statusText = {
-      pending: '承認待ち',
-      approved: '承認済み',
-      rejected: '却下'
+    const config = statusConfig[status] || {
+      color: 'bg-gray-100 text-gray-800 border-gray-200',
+      icon: FaClock,
+      text: status
     };
+    
+    const IconComponent = config.icon;
     
     return (
-      <span className={`px-2 py-1 rounded text-xs ${statusColors[status] || 'bg-gray-100 text-gray-800'}`}>
-        {statusText[status] || status}
+      <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border ${config.color}`}>
+        <IconComponent className="w-3 h-3 mr-1" />
+        {config.text}
       </span>
     );
   };
 
   return (
     <Layout>
-      <div className="max-w-6xl mx-auto">
-        <div className="mb-6">
-          <Link to="/" className="text-blue-600 hover:underline mb-4 inline-block">
-            ← ホームに戻る
-          </Link>
-          <div className="flex justify-between items-center mb-4">
-            <h1 className="text-2xl font-bold">勤怠報告</h1>
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {/* Header */}
+          <div className="mb-8">
             <Link 
-              to="/attendance/entry" 
-              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-200"
+              to="/" 
+              className="inline-flex items-center text-primary-600 hover:text-primary-700 font-medium mb-6 group transition-all duration-200"
             >
-              新規勤怠入力
+              <FaArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform duration-200" />
+              ホームに戻る
             </Link>
+            
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900 mb-2">勤怠報告</h1>
+                <p className="text-gray-600">勤怠記録の確認と管理</p>
+              </div>
+              <Link 
+                to="/attendance/entry" 
+                className="inline-flex items-center px-6 py-3 bg-primary-600 text-white rounded-xl font-medium hover:bg-primary-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
+              >
+                <FaPlus className="w-4 h-4 mr-2" />
+                新規勤怠入力
+              </Link>
+            </div>
           </div>
-        </div>
 
-        {/* Summary Cards */}
-        {summary && (
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-            <div className="bg-white p-4 rounded-lg shadow">
-              <div className="text-sm text-gray-600">出勤日数</div>
-              <div className="text-2xl font-bold text-blue-600">{summary.attendance.total_days}日</div>
+          {/* Summary Cards */}
+          {summary && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+              <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center">
+                    <FaCalendarAlt className="w-6 h-6 text-primary-600" />
+                  </div>
+                </div>
+                <div className="text-sm font-medium text-gray-600 mb-1">出勤日数</div>
+                <div className="text-3xl font-bold text-gray-900">{summary.attendance.total_days}<span className="text-lg text-gray-500 ml-1">日</span></div>
+              </div>
+              
+              <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 bg-success-100 rounded-xl flex items-center justify-center">
+                    <FaCheckCircle className="w-6 h-6 text-success-600" />
+                  </div>
+                </div>
+                <div className="text-sm font-medium text-gray-600 mb-1">承認済み</div>
+                <div className="text-3xl font-bold text-gray-900">{summary.attendance.approved_days}<span className="text-lg text-gray-500 ml-1">日</span></div>
+              </div>
+              
+              <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 bg-warning-100 rounded-xl flex items-center justify-center">
+                    <FaHourglass className="w-6 h-6 text-warning-600" />
+                  </div>
+                </div>
+                <div className="text-sm font-medium text-gray-600 mb-1">承認待ち</div>
+                <div className="text-3xl font-bold text-gray-900">{summary.attendance.pending_days}<span className="text-lg text-gray-500 ml-1">日</span></div>
+              </div>
+              
+              <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
+                    <FaClock className="w-6 h-6 text-purple-600" />
+                  </div>
+                </div>
+                <div className="text-sm font-medium text-gray-600 mb-1">残業時間</div>
+                <div className="text-3xl font-bold text-gray-900">{summary.attendance.total_overtime || 0}<span className="text-lg text-gray-500 ml-1">時間</span></div>
+              </div>
             </div>
-            <div className="bg-white p-4 rounded-lg shadow">
-              <div className="text-sm text-gray-600">承認済み</div>
-              <div className="text-2xl font-bold text-green-600">{summary.attendance.approved_days}日</div>
-            </div>
-            <div className="bg-white p-4 rounded-lg shadow">
-              <div className="text-sm text-gray-600">承認待ち</div>
-              <div className="text-2xl font-bold text-yellow-600">{summary.attendance.pending_days}日</div>
-            </div>
-            <div className="bg-white p-4 rounded-lg shadow">
-              <div className="text-sm text-gray-600">残業時間</div>
-              <div className="text-2xl font-bold text-purple-600">{summary.attendance.total_overtime || 0}時間</div>
-            </div>
-          </div>
-        )}
+          )}
 
-        {/* Filter Controls */}
-        <div className="bg-white p-4 rounded-lg shadow mb-6">
-          <div className="flex flex-wrap gap-4 items-end">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">開始日</label>
-              <input
-                type="date"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-                className="border rounded px-3 py-2"
-              />
+          {/* Filter Controls */}
+          <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-8">
+            <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-end">
+              <div className="flex-1">
+                <label className="block text-sm font-medium text-gray-700 mb-2">開始日</label>
+                <input
+                  type="date"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                  className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
+                />
+              </div>
+              <div className="flex-1">
+                <label className="block text-sm font-medium text-gray-700 mb-2">終了日</label>
+                <input
+                  type="date"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                  className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
+                />
+              </div>
+              <button
+                onClick={() => { fetchAttendanceRecords(); fetchSummary(); }}
+                className="inline-flex items-center px-6 py-3 bg-primary-600 text-white rounded-xl font-medium hover:bg-primary-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
+              >
+                <FaSearch className="w-4 h-4 mr-2" />
+                検索
+              </button>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">終了日</label>
-              <input
-                type="date"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-                className="border rounded px-3 py-2"
-              />
-            </div>
-            <button
-              onClick={() => { fetchAttendanceRecords(); fetchSummary(); }}
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-            >
-              検索
-            </button>
           </div>
-        </div>
 
-        {/* Attendance Records Table */}
-        <div className="bg-white rounded-lg shadow overflow-hidden">
-          <div className="px-6 py-4 border-b">
-            <h2 className="text-lg font-semibold">勤怠記録</h2>
-          </div>
-          
-          {loading && <div className="p-6">読み込み中...</div>}
-          {error && <div className="p-6 text-red-500">{error}</div>}
+          {/* Attendance Records Table */}
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="px-6 py-5 border-b border-gray-100">
+              <div className="flex items-center">
+                <div className="w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center mr-3">
+                  <FaChartBar className="w-4 h-4 text-primary-600" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-semibold text-gray-900">勤怠記録</h2>
+                  <p className="text-sm text-gray-600">出勤・退勤記録の詳細一覧</p>
+                </div>
+              </div>
+            </div>
+            
+            {loading && (
+              <div className="flex items-center justify-center p-12">
+                <FaSpinner className="animate-spin text-primary-600 text-xl mr-3" />
+                <span className="text-gray-600">読み込み中...</span>
+              </div>
+            )}
+            {error && (
+              <div className="flex items-center justify-center p-12">
+                <div className="text-center">
+                  <FaTimesCircle className="text-error-600 text-3xl mb-3 mx-auto" />
+                  <p className="text-error-600 font-medium">{error}</p>
+                </div>
+              </div>
+            )}
           
           {!loading && !error && (
             <div className="overflow-x-auto">
@@ -270,12 +353,15 @@ const AttendanceReport = () => {
               </table>
               
               {attendanceRecords.length === 0 && (
-                <div className="text-center py-8 text-gray-500">
-                  指定した期間の勤怠記録がありません
+                <div className="text-center py-12">
+                  <FaCalendarAlt className="text-gray-400 text-4xl mb-4 mx-auto" />
+                  <p className="text-gray-500 font-medium">指定した期間の勤怠記録がありません</p>
+                  <p className="text-gray-400 text-sm mt-2">別の期間を選択してお試しください</p>
                 </div>
               )}
             </div>
           )}
+        </div>
         </div>
       </div>
     </Layout>

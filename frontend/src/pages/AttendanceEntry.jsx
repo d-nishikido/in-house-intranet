@@ -4,6 +4,20 @@ import axios from 'axios';
 import Layout from '../components/Layout';
 import { useAuth } from '../contexts/AuthContext';
 import authService from '../services/authService';
+import { 
+  FaArrowLeft, 
+  FaCalendarAlt, 
+  FaClock, 
+  FaPlus, 
+  FaMinus, 
+  FaSave, 
+  FaTimes, 
+  FaCheckCircle, 
+  FaExclamationTriangle,
+  FaSpinner,
+  FaCalculator,
+  FaCoffee
+} from 'react-icons/fa';
 
 const AttendanceEntry = () => {
   const { user } = useAuth();
@@ -208,174 +222,283 @@ const AttendanceEntry = () => {
 
   return (
     <Layout>
-      <div className="max-w-2xl mx-auto">
-        <div className="mb-6">
-          <Link to="/" className="text-blue-600 hover:underline mb-4 inline-block">
-            ← ホームに戻る
-          </Link>
-          <h1 className="text-2xl font-bold mb-4">勤怠報告入力</h1>
-        </div>
-
-        {success && (
-          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
-            <strong>成功!</strong> 勤怠報告が正常に送信されました。勤怠報告ページにリダイレクトします...
-          </div>
-        )}
-
-        {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
-            <strong>エラー:</strong> {error}
-          </div>
-        )}
-
-        <div className="bg-white rounded-lg shadow p-6">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Date */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                日付 <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="date"
-                name="date"
-                value={formData.date}
-                onChange={handleInputChange}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-            </div>
-
-            {/* Check-in Time */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                出勤時刻 <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="time"
-                name="checkInTime"
-                value={formData.checkInTime}
-                onChange={handleInputChange}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-            </div>
-
-            {/* Check-out Time */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                退勤時刻 <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="time"
-                name="checkOutTime"
-                value={formData.checkOutTime}
-                onChange={handleInputChange}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-            </div>
-
-            {/* Break Times */}
-            <div>
-              <div className="flex justify-between items-center mb-2">
-                <label className="block text-sm font-medium text-gray-700">
-                  休憩時間
-                </label>
-                <button
-                  type="button"
-                  onClick={addBreakTime}
-                  className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 transition duration-200"
-                >
-                  + 休憩時間を追加
-                </button>
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {/* Header */}
+          <div className="mb-8">
+            <Link 
+              to="/" 
+              className="inline-flex items-center text-primary-600 hover:text-primary-700 font-medium mb-6 group transition-all duration-200"
+            >
+              <FaArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform duration-200" />
+              ホームに戻る
+            </Link>
+            
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900 mb-2">勤怠報告入力</h1>
+                <p className="text-gray-600">日々の勤務時間を記録しましょう</p>
               </div>
-              
-              {breakTimes.map((breakTime, index) => (
-                <div key={breakTime.id} className="grid grid-cols-2 gap-4 mb-3 p-3 border border-gray-200 rounded-lg">
+              <div className="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center">
+                <FaClock className="w-6 h-6 text-primary-600" />
+              </div>
+            </div>
+          </div>
+
+          {/* Success Message */}
+          {success && (
+            <div className="mb-8 p-4 bg-success-50 border border-success-200 rounded-2xl">
+              <div className="flex items-center">
+                <div className="w-8 h-8 bg-success-100 rounded-lg flex items-center justify-center mr-3">
+                  <FaCheckCircle className="w-4 h-4 text-success-600" />
+                </div>
+                <div>
+                  <p className="font-medium text-success-800">勤怠報告が正常に送信されました</p>
+                  <p className="text-sm text-success-600 mt-1">勤怠報告ページにリダイレクトします...</p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Error Message */}
+          {error && (
+            <div className="mb-8 p-4 bg-error-50 border border-error-200 rounded-2xl">
+              <div className="flex items-center">
+                <div className="w-8 h-8 bg-error-100 rounded-lg flex items-center justify-center mr-3">
+                  <FaExclamationTriangle className="w-4 h-4 text-error-600" />
+                </div>
+                <div>
+                  <p className="font-medium text-error-800">エラーが発生しました</p>
+                  <p className="text-sm text-error-600 mt-1">{error}</p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Main Form Card */}
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="px-6 py-5 border-b border-gray-100">
+              <div className="flex items-center">
+                <div className="w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center mr-3">
+                  <FaCalendarAlt className="w-4 h-4 text-primary-600" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-semibold text-gray-900">勤怠情報入力</h2>
+                  <p className="text-sm text-gray-600">出勤・退勤時間と休憩時間を入力してください</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="p-6">
+              <form onSubmit={handleSubmit} className="space-y-8">
+                {/* Date */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-xs font-medium text-gray-600 mb-1">
-                      休憩{index + 1} 開始時刻
+                    <label className="block text-sm font-medium text-gray-700 mb-3">
+                      <div className="flex items-center">
+                        <FaCalendarAlt className="w-4 h-4 mr-2 text-primary-600" />
+                        日付 <span className="text-error-500 ml-1">*</span>
+                      </div>
+                    </label>
+                    <input
+                      type="date"
+                      name="date"
+                      value={formData.date}
+                      onChange={handleInputChange}
+                      className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
+                      required
+                    />
+                  </div>
+
+                  <div></div>
+                </div>
+                
+                {/* Check-in and Check-out Times */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-3">
+                      <div className="flex items-center">
+                        <FaClock className="w-4 h-4 mr-2 text-success-600" />
+                        出勤時刻 <span className="text-error-500 ml-1">*</span>
+                      </div>
                     </label>
                     <input
                       type="time"
-                      value={breakTime.startTime}
-                      onChange={(e) => updateBreakTime(breakTime.id, 'startTime', e.target.value)}
-                      className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      name="checkInTime"
+                      value={formData.checkInTime}
+                      onChange={handleInputChange}
+                      className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-success-500 focus:border-transparent transition-all duration-200"
+                      required
                     />
                   </div>
+                  
                   <div>
-                    <label className="block text-xs font-medium text-gray-600 mb-1">
-                      休憩{index + 1} 終了時刻
+                    <label className="block text-sm font-medium text-gray-700 mb-3">
+                      <div className="flex items-center">
+                        <FaClock className="w-4 h-4 mr-2 text-error-600" />
+                        退勤時刻 <span className="text-error-500 ml-1">*</span>
+                      </div>
                     </label>
-                    <div className="flex gap-2">
-                      <input
-                        type="time"
-                        value={breakTime.endTime}
-                        onChange={(e) => updateBreakTime(breakTime.id, 'endTime', e.target.value)}
-                        className="flex-1 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      />
-                      {breakTimes.length > 1 && (
-                        <button
-                          type="button"
-                          onClick={() => removeBreakTime(breakTime.id)}
-                          className="bg-red-600 text-white px-2 py-2 rounded text-sm hover:bg-red-700 transition duration-200"
-                        >
-                          ×
-                        </button>
-                      )}
+                    <input
+                      type="time"
+                      name="checkOutTime"
+                      value={formData.checkOutTime}
+                      onChange={handleInputChange}
+                      className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-error-500 focus:border-transparent transition-all duration-200"
+                      required
+                    />
+                  </div>
+                </div>
+
+                {/* Break Times */}
+                <div>
+                  <div className="flex justify-between items-center mb-4">
+                    <label className="block text-sm font-medium text-gray-700">
+                      <div className="flex items-center">
+                        <FaCoffee className="w-4 h-4 mr-2 text-warning-600" />
+                        休憩時間
+                      </div>
+                    </label>
+                    <button
+                      type="button"
+                      onClick={addBreakTime}
+                      className="inline-flex items-center px-4 py-2 bg-success-600 text-white rounded-xl text-sm font-medium hover:bg-success-700 transform hover:scale-105 transition-all duration-200 shadow-sm hover:shadow-md"
+                    >
+                      <FaPlus className="w-3 h-3 mr-2" />
+                      休憩時間を追加
+                    </button>
+                  </div>
+              
+                  <div className="space-y-4">
+                    {breakTimes.map((breakTime, index) => (
+                      <div key={breakTime.id} className="bg-gray-50 rounded-xl p-4 border border-gray-200">
+                        <div className="flex items-center justify-between mb-3">
+                          <h4 className="text-sm font-medium text-gray-700 flex items-center">
+                            <FaCoffee className="w-3 h-3 mr-2 text-warning-600" />
+                            休憩 {index + 1}
+                          </h4>
+                          {breakTimes.length > 1 && (
+                            <button
+                              type="button"
+                              onClick={() => removeBreakTime(breakTime.id)}
+                              className="p-2 text-error-600 hover:bg-error-100 rounded-lg transition-colors duration-200"
+                              title="この休憩時間を削除"
+                            >
+                              <FaMinus className="w-3 h-3" />
+                            </button>
+                          )}
+                        </div>
+                        
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-xs font-medium text-gray-600 mb-2">
+                              開始時刻
+                            </label>
+                            <input
+                              type="time"
+                              value={breakTime.startTime}
+                              onChange={(e) => updateBreakTime(breakTime.id, 'startTime', e.target.value)}
+                              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-warning-500 focus:border-transparent transition-all duration-200"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-medium text-gray-600 mb-2">
+                              終了時刻
+                            </label>
+                            <input
+                              type="time"
+                              value={breakTime.endTime}
+                              onChange={(e) => updateBreakTime(breakTime.id, 'endTime', e.target.value)}
+                              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-warning-500 focus:border-transparent transition-all duration-200"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Calculated Results */}
+                <div className="bg-gradient-to-r from-primary-50 to-blue-50 rounded-2xl p-6 border border-primary-200">
+                  <div className="flex items-center mb-4">
+                    <div className="w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center mr-3">
+                      <FaCalculator className="w-4 h-4 text-primary-600" />
+                    </div>
+                    <h3 className="font-semibold text-gray-900">計算結果</h3>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="bg-white rounded-xl p-4 shadow-sm">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-sm text-gray-600 mb-1">勤務時間</p>
+                          <p className="text-2xl font-bold text-gray-900">{calculatedData.workingHours}</p>
+                        </div>
+                        <div className="w-10 h-10 bg-success-100 rounded-lg flex items-center justify-center">
+                          <FaClock className="w-5 h-5 text-success-600" />
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="bg-white rounded-xl p-4 shadow-sm">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-sm text-gray-600 mb-1">残業時間</p>
+                          <p className="text-2xl font-bold text-gray-900">{calculatedData.overtimeHours}<span className="text-sm text-gray-500 ml-1">時間</span></p>
+                        </div>
+                        <div className="w-10 h-10 bg-warning-100 rounded-lg flex items-center justify-center">
+                          <FaClock className="w-5 h-5 text-warning-600" />
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
 
-            {/* Calculated Working Hours */}
-            <div className="bg-gray-50 p-4 rounded-md">
-              <h3 className="text-sm font-medium text-gray-700 mb-2">計算結果</h3>
-              <div className="grid grid-cols-2 gap-4 text-sm">
+                {/* Notes */}
                 <div>
-                  <span className="text-gray-600">勤務時間:</span>
-                  <span className="ml-2 font-semibold">{calculatedData.workingHours}</span>
+                  <label className="block text-sm font-medium text-gray-700 mb-3">
+                    備考
+                  </label>
+                  <textarea
+                    name="notes"
+                    value={formData.notes}
+                    onChange={handleInputChange}
+                    rows={4}
+                    className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
+                    placeholder="特記事項があれば入力してください（遅刻・早退の理由、特別な作業内容など）"
+                  />
                 </div>
-                <div>
-                  <span className="text-gray-600">残業時間:</span>
-                  <span className="ml-2 font-semibold">{calculatedData.overtimeHours}時間</span>
+
+                {/* Submit Buttons */}
+                <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-100">
+                  <Link
+                    to="/attendance/report"
+                    className="inline-flex items-center justify-center px-6 py-3 bg-gray-500 text-white rounded-xl font-medium hover:bg-gray-600 transform hover:scale-105 transition-all duration-200 shadow-sm hover:shadow-md"
+                  >
+                    <FaTimes className="w-4 h-4 mr-2" />
+                    キャンセル
+                  </Link>
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="flex-1 inline-flex items-center justify-center px-6 py-3 bg-primary-600 text-white rounded-xl font-medium hover:bg-primary-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:transform-none"
+                  >
+                    {loading ? (
+                      <>
+                        <FaSpinner className="animate-spin w-4 h-4 mr-2" />
+                        送信中...
+                      </>
+                    ) : (
+                      <>
+                        <FaSave className="w-4 h-4 mr-2" />
+                        勤怠報告を送信
+                      </>
+                    )}
+                  </button>
                 </div>
-              </div>
+              </form>
             </div>
-
-            {/* Notes */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                備考
-              </label>
-              <textarea
-                name="notes"
-                value={formData.notes}
-                onChange={handleInputChange}
-                rows={3}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="特記事項があれば入力してください"
-              />
-            </div>
-
-            {/* Submit Buttons */}
-            <div className="flex justify-between">
-              <Link
-                to="/attendance/report"
-                className="bg-gray-500 text-white px-6 py-2 rounded-md hover:bg-gray-600 transition duration-200"
-              >
-                キャンセル
-              </Link>
-              <button
-                type="submit"
-                disabled={loading}
-                className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition duration-200 disabled:opacity-50"
-              >
-                {loading ? '送信中...' : '勤怠報告を送信'}
-              </button>
-            </div>
-          </form>
+          </div>
         </div>
       </div>
     </Layout>
