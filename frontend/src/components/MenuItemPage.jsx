@@ -19,7 +19,17 @@ const MenuItemPage = ({ title, categoryName }) => {
     management: '管理本部より',
     procedures: '手続き・申請',
     equipment: '機器',
-    intranet: 'イントラ・メール'
+    intranet: 'イントラ・メール',
+    'emg-vision': 'EMGビジョン',
+    'business-strategy': '事業戦略会議',
+    compliance: 'コンプライアンス委員会',
+    development: '開発本部',
+    'public-relations': '広報企画部',
+    security: '情報セキュリティ',
+    recruitment: '社内人材公募',
+    education: '教育',
+    lists: '一覧',
+    reports: '発表・報告'
   };
 
   // Map item names to Japanese titles
@@ -68,7 +78,55 @@ const MenuItemPage = ({ title, categoryName }) => {
     office365: 'Office365について',
     'email-settings': 'メール設定',
     'bulletin-board-usage': '掲示板利用方法',
-    'software-links': 'ソフトリンク集'
+    'software-links': 'ソフトリンク集',
+    
+    // EMG Vision
+    'corporate-philosophy': '企業理念',
+    'management-policy': '経営指針と中期事業計画',
+    'environmental-policy': '環境に対する理念と方針',
+    
+    // Business Strategy
+    meeting: '事業戦略会議より',
+    'quality-assurance': 'EMG品質保証',
+    'budget-planning': '予算計画管理室',
+    'civil-law-amendment': '民法の一部改正について',
+    'subcontract-act': '下請法について',
+    
+    // Compliance
+    committee: 'コンプライアンス委員会より',
+    
+    // Development
+    'technical-seminar': '技術展開セミナー',
+    'dx-task-force': 'DX戦略タスクフォース',
+    
+    // Public Relations
+    portal: '広報企画部ポータルサイト',
+    
+    // Information Security
+    'emg-security': 'EMGセキュリティ',
+    'win11-upgrade': 'Win11アップグレード手順書',
+    'test-request-2024': 'テスト実施のお願い(2024年)',
+    
+    // Recruitment
+    about: '公募制度について',
+    
+    // Education
+    'training-qualifications': '教育・資格',
+    announcements: '教育推進部からのお知らせ',
+    'skill-calendar': '業務スキル教育カレンダー',
+    'development-plan': '事業内職業能力開発計画',
+    
+    // Lists
+    attendees: '出勤者',
+    'employee-count': '社員数',
+    'attendance-times': '最早出勤・最遅退勤者一覧',
+    'project-numbers': 'プロジェクト番号',
+    'partner-attendance': '協力会社メンバの勤務情報',
+    
+    // Reports
+    'emg-topics': 'EMGトピックス',
+    'qualification-history': '資格履歴検索',
+    'patents-trademarks': '特許と商標登録'
   };
 
   const currentCategoryTitle = categoryTitles[categorySegment] || categorySegment;
