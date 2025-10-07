@@ -63,7 +63,8 @@ const Menu = ({ isOpen, onClose }) => {
   const fetchMenuData = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:3001/api/menu', {
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:13001/api';
+      const response = await fetch(`${apiUrl}/menu`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

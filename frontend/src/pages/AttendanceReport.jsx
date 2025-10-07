@@ -27,7 +27,7 @@ const AttendanceReport = () => {
   const [endDate, setEndDate] = useState('');
   const [summary, setSummary] = useState(null);
   
-  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:13001/api';
 
   useEffect(() => {
     // Set default dates (current month)
