@@ -28,9 +28,9 @@ docker compose up -d
 ```
 
 4. アプリケーションにアクセス
-- Frontend: http://localhost:3000
-- Backend API: http://localhost:3001
-- Database: localhost:5432
+- Frontend: http://localhost:13000
+- Backend API: http://localhost:13001
+- Database: localhost:15433
 
 ## 開発コマンド
 

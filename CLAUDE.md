@@ -1,173 +1,73 @@
-# In-House Intranet Web System Development Project
+# Claude Code Spec-Driven Development
 
-## Project Overview
-Create an in-house intranet web system.
+Kiro-style Spec Driven Development implementation using claude code slash commands, hooks and agents.
 
-## Technical Requirements
+## Project Context
 
-### Frontend
-- React Router v7
+### Paths
+- Steering: `.kiro/steering/`
+- Specs: `.kiro/specs/`
+- Commands: `.claude/commands/`
 
-### Backend  
-- Node.js
+### Steering vs Specification
 
-### Database
-- PostgreSQL
+**Steering** (`.kiro/steering/`) - Guide AI with project-wide rules and context
+**Specs** (`.kiro/specs/`) - Formalize development process for individual features
 
-### Environment
-- Docker
+### Active Specifications
+- **port-configuration**: ポート番号の変更（データベース: 15433、バックエンド: 13001）
+- Check `.kiro/specs/` for active specifications
+- Use `/kiro:spec-status [feature-name]` to check progress
 
-## Test
-- Unit Test（Jest）
-- E2Eテスト（Playwright(MCP)）
-  - E2E test mcp__playwright__browser_*
-  関数を使用して実行する
-  - ブラウザ操作は全てMCPツール経由で行う
+## Development Guidelines
+- Think in English, but generate responses in Japanese (思考は英語、回答の生成は日本語で行うように)
 
-## Functional Requirements
+## Workflow
 
-### Header
-- Display "[Employee Name]'s page"
-- Today's date
-- Link to calendar
-- Display paid leave promotion day or regular departure recommendation day
+### Phase 0: Steering (Optional)
+`/kiro:steering` - Create/update steering documents
+`/kiro:steering-custom` - Create custom steering for specialized contexts
 
-### Sub-header
-- Links: [Attendees], [Welfare Committee], [Suggestion Box], [Bulletin Board], [Employee Directory], [Audit Page], [Add to Favorites], [Contact Us]
+Note: Optional for new features or small additions. You can proceed directly to spec-init.
 
-### Content
+### Phase 1: Specification Creation
+1. `/kiro:spec-init [detailed description]` - Initialize spec with detailed project description
+2. `/kiro:spec-requirements [feature]` - Generate requirements document
+3. `/kiro:spec-design [feature]` - Interactive: "Have you reviewed requirements.md? [y/N]"
+4. `/kiro:spec-tasks [feature]` - Interactive: Confirms both requirements and design review
 
-#### Announcements
-- Display list of announcements
+### Phase 2: Progress Tracking
+`/kiro:spec-status [feature]` - Check current progress and phases
 
-#### External System Links
-- Health Anshin Connect App (https://app.uconne.jp/) link
-- [HENNGE One] (https://console.mo.hdems.com/#/eandm.co.jp/) temporary hold confirmation link
-- [HENNGE One] (https://transfer.hennge.com/) secure storage link
-- [ANPIC] (https://anpic-v3.jecc.jp/emg/) safety confirmation system link
-- [Office365 Page] (https://m365.cloud.microsoft/apps?auth=2) link
+## Development Rules
+1. **Consider steering**: Run `/kiro:steering` before major development (optional for new features)
+2. **Follow 3-phase approval workflow**: Requirements → Design → Tasks → Implementation
+3. **Approval required**: Each phase requires human review (interactive prompt or manual)
+4. **No skipping phases**: Design requires approved requirements; Tasks require approved design
+5. **Update task status**: Mark tasks as completed when working on them
+6. **Keep steering current**: Run `/kiro:steering` after significant changes
+7. **Check spec compliance**: Use `/kiro:spec-status` to verify alignment
 
-#### Document Processing Status
-(※Display number of items received for each)
-- Applications
-- Approvals (excluding attendance reports)
-- Approvals (attendance reports)
+## Steering Configuration
 
-#### Work Status
-- Link to attendance report page
-- Link to work schedule setting page
+### Current Steering Files
+Managed by `/kiro:steering` command. Updates here reflect command changes.
 
-#### Submission Documents
+### Active Steering Files
+- `product.md`: Always included - Product context and business objectives
+- `tech.md`: Always included - Technology stack and architectural decisions
+- `structure.md`: Always included - File organization and code patterns
 
-##### Work-related
-- Attendance report (monthly data)
-- Work-related approval route diagram
+### Custom Steering Files
+<!-- Added by /kiro:steering-custom command -->
+<!-- Format:
+- `filename.md`: Mode - Pattern(s) - Description
+  Mode: Always|Conditional|Manual
+  Pattern: File patterns for Conditional mode
+-->
 
-##### Application-related
-- PC/Device bring-in/take-out/move application
-- PC/Device bring-in/take-out/move status list
-- Career review form
-- Self-assessment/Career review form list
+### Inclusion Modes
+- **Always**: Loaded in every interaction (default)
+- **Conditional**: Loaded for specific file patterns (e.g., "*.test.js")
+- **Manual**: Reference with `@filename.md` syntax
 
-##### Information Registration-related
-- Contract/outsourcing information registration
-- Contract/outsourcing information list
-
-##### Personal Information
-- Extension registration
-- PC management ledger
-- Career information
-- Link to salary statement
-
-### Menu
-
-#### Company
-- Company organization
-- About "Position System"
-- COCO schedule
-
-#### Operations & Rules
-- Work regulations
-- Operation guidelines
-- Substitute holidays
-
-#### Facilities
-- Seats/extensions
-- Office address & external phone number list
-- Management company contacts
-
-#### From Management Division
-- Management division business staff
-- HR announcements
-- Transfer information/Personnel Info.
-- General affairs page
-- Company car reservation
-- EiS announcements
-
-#### Procedures/Applications
-- Various notification applications
-- Settlement application workflow
-- Business card creation request
-- Equipment purchase registration
-- Auto insurance registration
-- SSL-VPN application
-- Employee referral application
-
-#### Equipment
-- Phone operation procedures
-- Video conference system
-- HDD data deletion
-- PC setup procedures
-
-#### Intranet & Email
-- Settings for intranet browsing
-- Intranet attendance report operation
-- About Office365
-- Email settings
-- Bulletin board usage
-- Software link collection
-
-## Non-functional Requirements
-- Create an attractive system
-
-## Items Requiring Decision
-The following items need to be decided:
-
-1. **Authentication & Authorization System**
-   - Employee authentication method (company AD integration, custom authentication, etc.)
-   - Permission management (general employees, administrators, department managers, etc.)
-
-2. **Database Design**
-   - Employee master
-   - Organization master
-   - Application/approval flow
-   - Announcements/bulletin board data
-
-3. **External System Integration**
-   - Integration methods with each external system
-   - SSO implementation availability
-
-4. **Approval Flow**
-   - Application approval route setting method
-   - Approver permission management
-
-5. **Notification Features**
-   - Email notification specifications
-   - In-system notification specifications
-
-6. **Calendar Features**
-   - Company calendar integration method
-   - Paid leave promotion day setting method
-
-7. **File Management**
-   - Document upload/download functionality
-   - File storage specifications
-
-8. **API Design**
-   - RESTful API
-   - Data format (JSON)
-
-## Development Environment & Tools
-- Implementation: Claude Code
-- Version control: Git
-- Containers: Docker / Docker Compose

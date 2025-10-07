@@ -13,7 +13,7 @@ const AnnouncementDetail = () => {
     const fetchAnnouncement = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL || 'http://localhost:3001'}/api/announcements/${id}`
+          `${process.env.REACT_APP_API_URL || 'http://localhost:13001'}/api/announcements/${id}`
         );
         setAnnouncement(response.data);
       } catch (err) {
